@@ -5,4 +5,5 @@ abstract class UserRepository {
   Future<MyUser> signUp(MyUser user, String password);
   Future<void> logOut();
   Future<void> resetPassword(String email);
+  Future<void> setUserData(MyUser myUser);
 }
