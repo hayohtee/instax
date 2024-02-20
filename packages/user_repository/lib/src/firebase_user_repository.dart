@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,7 @@ class FirebaseUserRepository implements UserRepository {
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
   final FirebaseAuth _firebaseAuth;
+  final usersCollection = FirebaseFirestore.instance.collection('users');
 
   @override
   Future<void> logOut() async {
@@ -52,6 +54,31 @@ class FirebaseUserRepository implements UserRepository {
 
       myUser = myUser.copyWith(id: userCredential.user!.uid);
       return myUser;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<MyUser> getMyUser(String myUserId) {
+    try {
+      return usersCollection
+          .doc(myUserId)
+          .get()
+          .then((value) => MyUserEntity.fromDocument(value.data()!));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> setUserData(MyUser myUser) async {
+    try {
+      await usersCollection
+          .doc(myUser.id)
+          .set((myUser as MyUserEntity).toDocument());
     } catch (e) {
       debugPrint(e.toString());
       rethrow;
