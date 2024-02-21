@@ -8,22 +8,13 @@ final class AuthenticationState extends Equatable {
     this.user,
   });
 
-  factory AuthenticationState.unknown() {
-    return const AuthenticationState._();
-  }
+  const AuthenticationState.unknown() : this._();
 
-  factory AuthenticationState.authenticated(User user) {
-    return AuthenticationState._(
-      user: user,
-      status: AuthenticationStatus.authenticated,
-    );
-  }
+  const AuthenticationState.authenticated(User user)
+      : this._(user: user, status: AuthenticationStatus.authenticated);
 
-  factory AuthenticationState.unauthenticated() {
-    return const AuthenticationState._(
-      status: AuthenticationStatus.unauthenticated,
-    );
-  }
+  const AuthenticationState.unauthenticated()
+      : this._(status: AuthenticationStatus.unauthenticated);
 
   final User? user;
   final AuthenticationStatus status;
